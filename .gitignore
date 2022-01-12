@@ -1,0 +1,2 @@
+#Ne pas transférer node_modules sur github
+node_modules
