@@ -7,6 +7,7 @@
     <title>Score</title>
 </head>
 <body>
+    <button onclick="window.location.replace('listMatches')"> <- </button>
     <h3>
         Mettre à jour le matche <strong id="matcheTitle"> </strong>
     </h3>
@@ -30,7 +31,8 @@
         "headers": {
             "Accept": "*/*",
             "Sec-Fetch-Mode": "cors",
-            "Sec-Fetch-Site": "cross-site"
+            "Sec-Fetch-Site": "cross-site",
+            "authorization":"JWT "+window.localStorage.getItem("token")
         },
         "method": "GET",
         "mode": "cors"
@@ -58,7 +60,8 @@
         //envoyer les données en json au serveur
         fetch("http://localhost:3002/api/updateScore/"+id,{
             "headers":{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "authorization":"JWT "+window.localStorage.getItem("token")
             },
             "method":"PUT",
             "body":JSON.stringify(score)

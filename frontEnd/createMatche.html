@@ -25,6 +25,7 @@
         "headers": {
             "Accept": "*/*",
             "Accept-Language": "fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3",
+            "authorization":"JWT "+window.localStorage.getItem("token")
         },
         "method": "GET",
         "mode": "cors"
@@ -47,7 +48,8 @@
     function createMatche(form){
         fetch("http://localhost:3002/api/createMatche", {
             "headers":{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                "authorization":"JWT "+window.localStorage.getItem("token")
             },
             "body": JSON.stringify(form),
             "method": "POST"

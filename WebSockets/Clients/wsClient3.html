@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="messageList">
+
+    </ul>
+    <input type="text" id="message" />
+    <button id="send"> Send </button>
+</body>
+<script>
+    //modifier la variable msg selon le texte de l'input
+    var msg = "";
+    document.querySelector("#message").addEventListener("change",event=>{
+        msg = event.target.value
+    })
+    let list = document.querySelector("#messageList")
+    // Créer une connexion WebSocket
+    const socket = new WebSocket('ws://localhost:89');
+
+    // La connexion est ouverte
+    socket.addEventListener('open', function (event) {
+        console.log(event)
+        socket.send('Coucou le serveur !');
+    });
+
+    // Écouter les messages entrants
+    socket.addEventListener('message', function (event) {
+        console.log('Voici un message du serveur', event.data);
+        list.insertAdjacentHTML("afterbegin","<li>"+event.data+"</li>")
+    });
+    //envoyer un message en cliquant sur le boutton
+    document.querySelector("#send").addEventListener("click",function(event){
+        socket.send(msg)
+    })
+
+</script>
+</html>

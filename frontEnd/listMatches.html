@@ -33,6 +33,9 @@
                 let conf = window.confirm("Confirmer la suppression du matche "+id+" ?")
                 if(conf){
                     fetch("http://localhost:3002/api/deleteMatche/"+id,{
+                        "headers":{
+                            "authorization":"JWT "+window.localStorage.getItem("token")
+                        },
                         "method":"delete"
                     })
                     .then(function(prm){
@@ -58,16 +61,22 @@
     <body>
         <div style="display: flex; justify-content: space-around; margin: 16px">
             <a href="createMatche.html" id="ajoutClub"> <button> Créer un matche </button> </a>
-            <!-- <button id="logout" class="delete"> Se déconnecter </button> -->
+            <h4 id="userName">  </h4>
+            <button id="logout" class="delete"> Se déconnecter </button>
         </div>
         <div id="content" style="background-color:seagreen;color: beige;">
 
         </div>
         <script>
+            document.querySelector("#userName").innerText = "Bienvenu "+window.localStorage.getItem("userName")
             document.querySelector("#content").innerHTML = "<h4> Loading... </h4>";
             let content = [];
             window.onload = async function(e){
-                await fetch("http://localhost:3002/api/listMatches")
+                await fetch("http://localhost:3002/api/listMatches",{
+                    "headers":{
+                        "authorization":"JWT "+window.localStorage.getItem("token")
+                    }
+                })
                 .then(function(prm){
                     if(prm.status===500){
                         alert("Une erreur s'est produite sur le serveur!")
@@ -86,7 +95,13 @@
                     alert("Une erreur a empêché l'éxecution de la requête")
                 });
                 buildList(content.matches)
-            }          
+            }
+            document.querySelector("#logout").addEventListener("click",function(e){
+                window.localStorage.removeItem("token")
+                window.localStorage.removeItem("userName")
+                window.localStorage.removeItem("role")
+                window.location.replace("login")
+            })
         </script>
     </body>
 </html>
